@@ -7,6 +7,7 @@ import { PricingPage } from '../pages/PricingPage'
 import { LearnPage } from '../pages/LearnPage'
 import { ArchivePage } from '../pages/ArchivePage'
 import { ArchiveDetailPage } from '../pages/ArchiveDetailPage'
+import { ReflectionPage } from '../reflect/ReflectionPage'
 import { MyPage } from '../pages/MyPage'
 import { LoginPage } from '../pages/LoginPage'
 import { AdminPage } from '../pages/AdminPage'
@@ -32,6 +33,7 @@ export function AppRouter() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/learn" element={<LearnPage />} />
+          <Route path="/reflect" element={<ReflectionPage />} />
           <Route path="/login" element={<LoginPage />} />
 
           {/* 회원 전용 */}

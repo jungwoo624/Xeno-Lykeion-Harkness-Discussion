@@ -5,6 +5,7 @@ const MENU = [
   { to: '/about', label: '소개' },
   { to: '/pricing', label: '이용안내' },
   { to: '/learn', label: '학습' },
+  { to: '/reflect', label: '나의 성찰' },
   { to: '/archive', label: '아카이브' },
 ]
 
