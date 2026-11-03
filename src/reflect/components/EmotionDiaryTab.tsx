@@ -18,7 +18,7 @@ const TONE_ORDER: EmotionTone[] = ['positive', 'mixed', 'tough']
 const INTENSITY_LABELS = ['', '아주 약함', '약함', '보통', '강함', '아주 강함']
 
 export function EmotionDiaryTab() {
-  const { items, add, remove } = useCollection<EmotionEntry>('emotion')
+  const { items, loading, add, remove } = useCollection<EmotionEntry>('emotion')
   const [selected, setSelected] = useState<string[]>([])
   const [intensity, setIntensity] = useState(3)
   const [situation, setSituation] = useState('')
@@ -143,7 +143,9 @@ export function EmotionDiaryTab() {
         <h3 className="text-sm font-semibold text-slate-500">
           내 감정 일기 {items.length > 0 && `(${items.length})`}
         </h3>
-        {items.length === 0 ? (
+        {loading ? (
+          <p className="py-10 text-center text-sm text-slate-400">불러오는 중…</p>
+        ) : items.length === 0 ? (
           <p className="rounded-xl border border-dashed border-gray-300 py-10 text-center text-sm text-slate-400">
             아직 기록이 없어요. 지금 느낌을 남겨보세요.
           </p>

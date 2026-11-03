@@ -3,6 +3,9 @@
 // 로그인 없이 누구나 사용하며, 기록은 이 브라우저(localStorage)에 저장된다.
 
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
+import { isFirebaseConfigured } from '../lib/firebase'
 import { LearningLogTab } from './components/LearningLogTab'
 import { EmotionDiaryTab } from './components/EmotionDiaryTab'
 import { SelfCheckTab } from './components/SelfCheckTab'
@@ -27,9 +30,10 @@ export function ReflectionPage() {
           AI와 나 사이, 생각과 감정을 정리하기
         </h1>
         <p className="text-sm leading-relaxed text-slate-600">
-          AI를 쓰며 알게 된 것과 내 생각, 그리고 느낀 감정을 나눠서 기록해보세요. 기록은 이
-          기기에만 저장되며 로그인은 필요 없습니다.
+          AI를 쓰며 알게 된 것과 내 생각, 그리고 느낀 감정을 나눠서 기록해보세요. 로그인은 필요
+          없지만, 로그인하면 기록이 내 계정에 안전하게 저장됩니다.
         </p>
+        <SyncBadge />
       </header>
 
       {/* 탭 */}
@@ -69,5 +73,36 @@ export function ReflectionPage() {
         {tab === 'selfcheck' && <SelfCheckTab />}
       </div>
     </main>
+  )
+}
+
+/** 현재 기록이 어디에 저장되는지 알려주는 배지 */
+function SyncBadge() {
+  const { user } = useAuth()
+
+  if (isFirebaseConfigured && user) {
+    return (
+      <span className="mt-1 inline-flex w-fit items-center gap-1.5 rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-medium text-teal-700">
+        ☁️ 계정에 동기화 중
+        <span className="max-w-[160px] truncate text-teal-600/70">· {user.email}</span>
+      </span>
+    )
+  }
+
+  if (isFirebaseConfigured && !user) {
+    return (
+      <span className="mt-1 inline-flex w-fit items-center gap-1.5 rounded-full border border-gray-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600">
+        💾 이 기기에 저장 중
+        <Link to="/login" className="font-semibold text-teal-600 hover:underline">
+          로그인하면 계정에 저장
+        </Link>
+      </span>
+    )
+  }
+
+  return (
+    <span className="mt-1 inline-flex w-fit items-center gap-1.5 rounded-full border border-gray-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600">
+      💾 이 기기에 저장 중
+    </span>
   )
 }

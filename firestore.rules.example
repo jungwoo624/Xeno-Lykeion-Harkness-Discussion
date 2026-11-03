@@ -1,0 +1,31 @@
+// Firestore 보안 규칙 예시 (참고용 — 실제 배포는 Firebase 콘솔에서 검토 후 적용하세요)
+//
+// 핵심: 성찰 공간 기록은 users/{uid} 하위 컬렉션에 저장되므로
+//       "본인만 자신의 users/{uid} 하위 문서를 읽고 쓸 수 있다" 규칙 하나면 보호됩니다.
+//       (reflectLearning / reflectEmotion / reflectSelfcheck 모두 포함)
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ✅ 성찰 공간 + 사용자 프로필: 본인만 접근
+    match /users/{uid}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // ── 아래는 기존 발행(아카이브) 기능용 예시입니다. 운영 정책에 맞게 조정하세요. ──
+
+    // 발행된 세션: 로그인 사용자 열람
+    match /sessions/{sessionId} {
+      allow read: if request.auth != null;
+      // 발행(쓰기)은 관리자 로직에 맞게 조정 필요 (예: 커스텀 클레임 검사)
+      allow write: if request.auth != null;
+    }
+
+    // 개인 리포트: 본인 것만 열람
+    match /reports/{reportId} {
+      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow write: if request.auth != null;
+    }
+  }
+}

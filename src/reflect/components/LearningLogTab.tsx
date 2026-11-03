@@ -8,7 +8,7 @@ import { formatDateTime } from '../format'
 import type { LearningEntry } from '../types'
 
 export function LearningLogTab() {
-  const { items, add, remove } = useCollection<LearningEntry>('learning')
+  const { items, loading, add, remove } = useCollection<LearningEntry>('learning')
   const [topic, setTopic] = useState('')
   const [learned, setLearned] = useState('')
   const [myThought, setMyThought] = useState('')
@@ -87,7 +87,9 @@ export function LearningLogTab() {
         <h3 className="text-sm font-semibold text-slate-500">
           내 배움 기록 {items.length > 0 && `(${items.length})`}
         </h3>
-        {items.length === 0 ? (
+        {loading ? (
+          <p className="py-10 text-center text-sm text-slate-400">불러오는 중…</p>
+        ) : items.length === 0 ? (
           <p className="rounded-xl border border-dashed border-gray-300 py-10 text-center text-sm text-slate-400">
             아직 기록이 없어요. 첫 배움을 남겨보세요.
           </p>
