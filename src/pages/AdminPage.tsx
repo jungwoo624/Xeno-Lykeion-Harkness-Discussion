@@ -4,7 +4,6 @@ import { SessionPage } from './SessionPage'
 import { VideoUploadPage } from './VideoUploadPage'
 import { AnalysisResultPage } from './AnalysisResultPage'
 import { MemberManager } from '../components/MemberManager'
-import { mockAnalysisResult } from '../data/mockAnalysisResult'
 import type { AnalysisResult } from '../data/mockAnalysisResult'
 
 type AdminMenu = 'manual' | 'video' | 'sessions' | 'members'
